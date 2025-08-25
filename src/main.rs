@@ -2,7 +2,7 @@ use std::env;
 use std::fs;
 use std::process;
 use std::error::Error;
-use rust_CLI::search;
+use rust_cli::search;
 fn main() {
    let arguments:Vec<String> = env::args().collect();
    let config1 = Config::build(&arguments).unwrap_or_else(|err|{
@@ -37,7 +37,10 @@ impl Config {
 
 fn run(config: Config)->Result<(),Box<dyn Error>>{
     let contents = fs::read_to_string(config.file_path)?;
-    println!("with texts:\n{contents}");
+    
+    for line in search(&config.query, &contents){
+        println!("{line}");
+    }
     Ok(())
 }
 
